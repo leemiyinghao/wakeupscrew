@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{pixiv.title}} | {% for tag in tags: %}#{{tag}}{% endfor %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" media="none"
+        onload="if(media!='all')media='all'" />
+    <link
+        href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,700,900|Noto+Sans+SC:400,700,900|Noto+Sans+TC:400,700,900&display=swap&subset=chinese-simplified,chinese-traditional,japanese"
+        rel="stylesheet" media="none" onload="if(media!='all')media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+        <link
+            href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,700,900|Noto+Sans+SC:400,700,900|Noto+Sans+TC:400,700,900&display=swap&subset=chinese-simplified,chinese-traditional,japanese"
+            rel="stylesheet">
+    </noscript>
+    <style>
+        body,
+        html {
+            font-family: 'Noto Sans TC', 'Noto Sans JP', 'Noto Sans SC', sans-serif;
+            color: #555555;
+            background-color: #efefef;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 1.8em;
+        }
+
+        .title {
+            margin: 1em auto;
+            font-size: larger;
+            font-weight: bolder;
+            text-align: center;
+        }
+
+        .content {
+            margin: auto;
+            max-width: 800px;
+            padding: 1rem;
+        }
+
+        .card {
+            width: 100%;
+            border: #aaaaaa solid 1px;
+            border-radius: 1rem;
+            background-color: #fefefe;
+            margin-bottom: 1rem;
+        }
+
+        .card.button-wrap,
+        .tag-wrap {
+            background-color: transparent;
+            border: none;
+        }
+
+        .card.button-wrap {
+            display: flex;
+            flex-direction: row-reverse;
+            flex-wrap: wrap;
+            margin-left: -0.5rem;
+            margin-right: -0.5rem;
+            width: calc(100% + 1rem);
+            flex-wrap: wrap-reverse;
+        }
+
+        .button {
+            flex: auto;
+            flex-basis: auto;
+            flex-grow: 1;
+            text-align: center;
+            padding: 1rem 2rem;
+            border: #aaaaaa solid 1px;
+            border-radius: 1rem;
+            overflow: hidden;
+            background-color: #fefefe;
+            margin: 0.5rem;
+        }
+
+        .button:hover,
+        .button.current {
+            color: #fefefe;
+            background-color: #555555;
+            border-color: #444444;
+        }
+
+        .button .material-icons {
+            font-size: initial;
+        }
+
+        .card img {
+            width: 100%;
+        }
+
+        h1 {
+            font-weight: 900;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        a,
+        a:visited {
+            color: #aaaaaa;
+            text-decoration: none;
+        }
+
+        a:hover,
+        a.current {
+            color: #555555;
+            text-decoration: double;
+        }
+
+        .tag {
+            color: #aaaaaa;
+            margin-right: 0.5rem;
+            word-break: keep-all;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            max-width: 100%;
+            display: inline-block;
+            font-weight: 700;
+            font-size: small;
+        }
+
+        .label {
+            background-color: #555555;
+            color: #aaaaaa;
+            display: none;
+        }
+
+        .card-content {
+            margin: 2rem;
+            margin-top: 0rem;
+            overflow: hidden;
+            word-break: break-all;
+        }
+
+        .card-content.full {
+            margin: 0;
+        }
+
+        .card-content.full.img {
+            border: 0px solid;
+            border-radius: 1rem 1rem 0 0;
+        }
+
+        .sticky {
+            position: sticky;
+            bottom: 0;
+            background-color: #fefefecc;
+        }
+
+        .information,
+        .information .material-icons {
+            color: #555555;
+            font-size: small;
+            font-weight: 700;
+        }
+
+        #expander,
+        #loading {
+            text-align: center;
+            color: #aaaaaa;
+        }
+
+        #expander {
+            cursor: pointer;
+        }
+
+        #expander:hover {
+            color: #555555;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes sync {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #expand-loading {
+            animation: sync 1s ease-in-out infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <div class="title">
+            <a href="/tag/">螺絲醒醒</a>
+        </div>
+        <div class="card">
+            <div class="card-content full img">
+                <a href={{url}}><img src="{{thumb}}" srcset="{{thumb}} 800w, {{thumbRetina}} 1600w"
+                        sizes="(max-width: 600px)" alt="{{pixiv.caption}}" /></a>
+            </div>
+            <div class="sticky">
+                <div class="card-content" style="margin-bottom:0;">
+                    <a href="{{source}}" target="_blank">
+                        <p style="float:right"><i class="material-icons">launch</i></p>
+                        <h1>{{pixiv.title}}</h1>
+                    </a>
+                    <a href="https://www.pixiv.net/users/{{pixiv.user.id}}" target="_blank">
+                        <p class="information"><i class="material-icons">brush</i> {{pixiv.user.name}}</p>
+                    </a>
+                </div>
+            </div>
+            <div class="card-content">
+                <p class="information" style="margin-top:0;"><i class="material-icons">schedule</i>
+                    {{pixiv.created_time}}</p>
+                <p class="information"><i class="material-icons">photo</i> {{pixiv.width}} × {{pixiv.height}}</p>
+                <div class="caption">
+                    {{pixiv.caption|default("", true)|replace("\n","<br/>\n")|safe|urlize(40, true, target='_blank')}}
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="tags">
+                    {% for tag in pixiv.tags: %}
+                    <span class="tag">
+                        <a class="{{'current' if tag in tags}}"
+                            href="https://wakeupscrew.catlee.se/tag/{{tag|urlencode}}/?{{now}}">
+                            #{{ tag }}
+                        </a>
+                    </span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div style="margin: 0.5em 1em">
+                <input type="text" name="keyword" id="keyword" value="" placeholder="Search tags..."
+                    style="width: 100%; border: none" />
+            </div>
+        </div>
+        <div class="card tag-wrap" id="tag-wrap">
+            <div class="card-content" id="tags">
+                {% for tag in popularTags: %}
+                <a class="tag{{" current" if tag in tags}}"
+                    href="https://wakeupscrew.catlee.se/tag/{{tag|urlencode}}/?{{now}}">
+                    #{{tag}} <span class="label">{{tagToCount[tag]}}</span>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="card tag-wrap hidden" id="search-tag-wrap">
+            <div class="card-content" id="search-tags">
+            </div>
+        </div>
+        <div class="card tag-wrap" id="expander">
+            <i class="material-icons" id="expand-more">expand_more</i>
+        </div>
+        <div class="card tag-wrap" id="loading">
+            <i class="material-icons hidden" id="expand-loading">refresh</i>
+        </div>
+    </div>
+</body>
+<script src="https://unpkg.com/pulltorefreshjs@0.1.20/dist/index.umd.js"></script>
+<script>
+    const ptr = PullToRefresh.init({
+        mainElement: 'body',
+        onRefresh() {
+            window.location = "https://wakeupscrew.catlee.se/tag/{{tags|join(' ')|urlencode}}/?{{now}}";
+        },
+        distMax: 100,
+        instructionsPullToRefresh: '<i class="material-icons">sync</i>',
+        instructionsReleaseToRefresh: '<i class="material-icons">sync</i>',
+        instructionsRefreshing: '<i class="material-icons">sync</i>'
+    });
+    window.addEventListener('keydown', function (e) {
+        if (e.code === "F5") {
+            e.preventDefault();
+            window.location = "https://wakeupscrew.catlee.se/tag/{{tags|join(' ')|urlencode}}/?{{now}}";
+        }
+    }, false);
+    document.getElementById('expander').addEventListener('click', function (e) {
+        document.getElementById('expand-more').classList.add("hidden");
+        document.getElementById('expand-loading').classList.remove("hidden");
+        fetch('https://wakeupscrew.catlee.se/tags/' + document.getElementById("tags").childElementCount + '/100/')
+            .then(e => e.json())
+            .then(tags => tags.map(tag => {
+                let _href = 'https://wakeupscrew.catlee.se/tag/' + encodeURI(tag) + '/?{{now}}';
+                let content = '#' + tag;
+                var link = document.createElement('a');
+                link.classList.add('tag');
+                if (!(["{{tags|join('", "')}}"].indexOf(tag) < 0)) {
+                    link.classList.add('current');
+                }
+                link.href = _href;
+                link.innerText = content;
+                return link;
+            }))
+            .then(links => {
+                var documentFragment = document.createDocumentFragment();
+                links.map(link => documentFragment.appendChild(link));
+                return documentFragment;
+            })
+            .then(documentFragment => document.getElementById("tags").appendChild(documentFragment))
+            .then(e => {
+                document.getElementById('expand-more').classList.remove("hidden");
+                document.getElementById('expand-loading').classList.add("hidden");
+            })
+    });
+    document.getElementById("keyword").addEventListener('change', e => {
+        const value = e.target.value;
+        document.getElementById('expand-loading').classList.remove("hidden");
+        fetch("https://wakeupscrew.catlee.se/tags/" + encodeURI(value) + "/")
+            .then(e => e.json())
+            .then(tags => tags.map(tag => {
+                let _href = 'https://wakeupscrew.catlee.se/tag/' + encodeURI(tag) + '/?{{now}}'.replace("#", "%23");
+                let content = '#' + tag;
+                var link = document.createElement('a');
+                link.classList.add('tag');
+                if (!(["{{tags|join('", "')}}"].indexOf(tag) < 0)) {
+                    link.classList.add('current');
+                }
+                link.href = _href;
+                link.innerText = content;
+                return link;
+            }))
+            .then(links => {
+                var documentFragment = document.createDocumentFragment();
+                links.map(link => documentFragment.appendChild(link));
+                return documentFragment;
+            })
+            .then(documentFragment => {
+                document.getElementById("search-tags").childNodes.forEach(element => {
+                    element.remove();
+                });
+                document.getElementById("search-tags").appendChild(documentFragment);
+            })
+            .then(e => {
+                document.getElementById('expand-loading').classList.add("hidden");
+            })
+        if (value === "" || value === null) {
+            document.getElementById("search-tag-wrap").classList.add("hidden");
+            document.getElementById("tag-wrap").classList.remove("hidden");
+            document.getElementById('expand-more').classList.remove("hidden");
+            document.getElementById('expand-loading').classList.add("hidden");
+        } else {
+            document.getElementById("tag-wrap").classList.add("hidden");
+            document.getElementById("search-tag-wrap").classList.remove("hidden");
+            document.getElementById('expand-more').classList.add("hidden");
+        }
+    })
+</script>
+
+</html>
